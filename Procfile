@@ -1,1 +1,1 @@
-web: gunicorn 6ecom_django.wsgi:application
+web: gunicorn myproject_ecom.wsgi:application
