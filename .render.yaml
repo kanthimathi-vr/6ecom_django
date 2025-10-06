@@ -2,12 +2,12 @@ services:
   - type: web
     name: your-django-app
     env: python
-    buildCommand: "./build.sh"
+    buildCommand:  pip install -r requirements.txt
     startCommand: "gunicorn myproject_ecom.wsgi:application"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: myproject_ecom.settings
-      - key: SECRET_KEY
-        generateValue: true
+       - key: SECRET_KEY
+        value: your-django-secret-key
       - key: DEBUG
         value: False
