@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container my-5">
+    <h1 class="fw-bold text-center mb-5 testimonial-heading">Secure Checkout</h1>
+    
+    <div class="row">
+        
+        {# LEFT COLUMN: Address and Payment Options #}
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white fw-bold">1. Shipping Information</div>
+                <div class="card-body">
+                    <form id="shipping-form" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+    {# FIX: Add name="full_name" to match the view's request.POST.get('full_name') #}
+    <div class="col-md-6"><input type="text" class="form-control" placeholder="Full Name" name="full_name" required></div>
+    
+    {# FIX: Add name="email" to match the view's request.POST.get('email') #}
+    <div class="col-md-6"><input type="email" class="form-control" placeholder="Email" name="email" required></div>
+    
+    {# FIX: Add name="address_line_1" #}
+    <div class="col-12"><input type="text" class="form-control" placeholder="Address Line 1" name="address_line_1" required></div>
+    
+    {# FIX: Add name="address_line_2" #}
+    <div class="col-12"><input type="text" class="form-control" placeholder="Address Line 2 (Optional)" name="address_line_2"></div>
+    
+    {# FIX: Add name="city" #}
+    <div class="col-md-4"><input type="text" class="form-control" placeholder="City" name="city" required></div>
+    
+    {# FIX: Add name="state" #}
+    <div class="col-md-4"><input type="text" class="form-control" placeholder="State/Province" name="state" required></div>
+    
+    {# FIX: Add name="zipcode" #}
+    <div class="col-md-4"><input type="text" class="form-control" placeholder="Zip/Postal Code" name="zipcode" required></div>
+</div>
+                        
+                        <h5 class="fw-bold mt-4 mb-3">2. Payment Method</h5>
+                        
+                        {# Razorpay/PhonePe Integration Block #}
+                        <div class="form-check border border-primary rounded-3 p-3 mb-2">
+                            <input class="form-check-input" type="radio" name="payment_method" id="razorpay" value="razorpay" checked>
+                            <label class="form-check-label fw-bold ms-2" for="razorpay">
+                                Pay Online (Razorpay / PhonePe) <i class="bi bi-credit-card-2-front-fill text-primary"></i>
+                            </label>
+                            <p class="small text-muted ms-4">Secure payment via UPI, Debit/Credit Card, or Netbanking.</p>
+                        </div>
+                        
+                        <div class="form-check border border-secondary rounded-3 p-3">
+                            <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod">
+                            <label class="form-check-label fw-bold ms-2" for="cod">
+                                Cash On Delivery (COD) <i class="bi bi-cash text-secondary"></i>
+                            </label>
+                            <p class="small text-muted ms-4">Secure payment via UPI, Debit/Credit Card, or Netbanking.</p>
+                        </div>
+                        
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold">Review Order & Pay</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        {# RIGHT COLUMN: Final Order Summary #}
+        <div class="col-lg-4">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white fw-bold">3. Order Total</div>
+                <div class="card-body">
+                    
+                    {# Item List (Small summary) #}
+                    <ul class="list-group list-group-flush mb-3 small">
+                        {# CHANGE: Iterate over the 'items' variable from the context #}
+                        {% for item in items %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            {{ item.product.name }} (x{{ item.quantity }})
+                            {# CHANGE: Use item.get_total which is likely defined on OrderItem model #}
+                            <span>${{ item.get_total|floatformat:2 }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    {# Final Totals #}
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Subtotal: 
+                            {# CHANGE: Use order.get_cart_total, which is defined on the Order model #}
+                            <span>${{ order.get_cart_total|floatformat:2 }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Shipping: <span>$10.00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center fw-bold fs-5 border-top border-dark mt-2">
+                            Total Due: 
+                            <span class="fs-4 text-primary">
+                                {# CHANGE: Use order.get_cart_total and add the shipping cost #}
+                                ${{ order.get_cart_total|add:10|floatformat:2 }}
+                            </span>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock content %}

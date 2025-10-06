@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Custom CSS for a Soft Pastel Purple & Lavender Theme */
+    :root {
+        /* New, softer pastel color palette */
+        --pastel-purple: #9B72C7;    /* Main Background/Button Color (Soft Wisteria) */
+        --soft-lavender: #F0E8FF;    /* Lightest color - Card Background */
+        --deep-violet: #524763;      /* Darkest color for Text/Hover/Borders (Contrast) */
+        --accent-lavender: #C3B1E1;  /* Muted accent for borders/links */
+        --off-white: #FFFFFF;        /* Pure white for button text contrast */
+    }
+
+    /* 1. Body/Background styling */
+    body {
+        /* Set background to the main pastel purple */
+        background-color: var(--pastel-purple) !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* 2. Card Styling */
+    .login-card {
+        /* Set card background to the soft lavender */
+        background-color: var(--soft-lavender);
+        border: none;
+        border-radius: 15px;
+        /* Softer, lighter shadow to match the pastel theme */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); 
+        padding: 30px; 
+    }
+
+    /* 3. Card Header Styling */
+    .login-card-header {
+        background-color: transparent;
+        /* Use the soft accent lavender for the border */
+        border-bottom: 3px solid var(--accent-lavender); 
+        /* Use the deep violet for high contrast text */
+        color: var(--deep-violet);
+        font-size: 2em; 
+        font-weight: 600; 
+        text-align: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+    }
+
+    /* 4. Input Fields (for {{ form.as_p }}) */
+    .login-card p {
+        margin-bottom: 1rem;
+    }
+    
+    .login-card .form-control {
+        border: 1px solid var(--accent-lavender); 
+        border-radius: 8px;
+        padding: 12px;
+        /* Input text should be the darkest color */
+        color: var(--deep-violet); 
+        background-color: var(--off-white);
+        transition: all 0.3s;
+    }
+    
+    .login-card .form-control:focus {
+        /* Border color is the main pastel purple on focus */
+        border-color: var(--pastel-purple); 
+        box-shadow: 0 0 0 0.25rem rgba(155, 114, 199, 0.35); /* Soft, pastel shadow on focus */
+    }
+    
+    .login-card label {
+        /* Label text is the darkest color */
+        color: var(--deep-violet);
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    /* 5. Button Styling */
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        /* Use the main pastel purple for the button background */
+        background-color: var(--pastel-purple); 
+        color: var(--off-white);
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        margin-top: 15px;
+    }
+    .btn-login:hover {
+        /* Darken the button slightly on hover for feedback */
+        background-color: var(--deep-violet); 
+        transform: translateY(-1px); 
+        color: var(--off-white);
+    }
+    
+    /* 6. Register Link Styling */
+    .register-link {
+        margin-top: 30px;
+        font-size: 0.9em;
+        color: var(--deep-violet);
+        text-align: center;
+    }
+
+    .register-link a {
+        /* Link color uses the main pastel purple */
+        color: var(--pastel-purple); 
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+
+    .register-link a:hover {
+        color: var(--deep-violet); /* Darken link on hover */
+        text-decoration: underline;
+    }
+
+</style>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4"> 
+        <div class="card login-card">
+            
+            <div class="card-header login-card-header">
+                <span style="font-size: 1em; color: var(--accent-lavender);">🔒 </span>
+                Welcome Back
+            </div>
+            
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    {{ form.as_p }} 
+                    
+                    <button class="btn btn-login" type="submit">LOG IN</button>
+                </form>
+
+                <p class="register-link">
+                    New user? 
+                    <a href="{% url 'store:register' %}">Create an Account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

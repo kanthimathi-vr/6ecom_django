@@ -1,0 +1,1 @@
+web: gunicorn 6ecom_django.wsgi:application

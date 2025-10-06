@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            
+            <div class="card shadow-lg p-5 border-success border-3">
+                <div class="card-body">
+                    
+                    {# Display different icons based on payment type (Assuming you pass 'payment_status' in context) #}
+                    {% if payment_status == 'COD' %}
+                        <i class="bi bi-truck display-1 text-info mb-4"></i>
+                        <h1 class="fw-bold text-info mb-3">Order Placed Successfully!</h1>
+                        <p class="lead">
+                            Your order has been confirmed and will be shipped soon.
+                        </p>
+                        <h4 class="mb-4">
+                            Payment Method: <span class="badge bg-info">Cash On Delivery (COD)</span>
+                        </h4>
+                    {% else %}
+                        <i class="bi bi-check-circle-fill display-1 text-success mb-4"></i>
+                        <h1 class="fw-bold text-success mb-3">Payment Successful!</h1>
+                        <p class="lead">
+                            Thank you for your purchase. Your payment has been successfully processed.
+                        </p>
+                        <h4 class="mb-4">
+                            Payment Status: <span class="badge bg-success">Paid Online</span>
+                        </h4>
+                    {% endif %}
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-start">
+                        <p class="mb-1 fw-bold">Order ID:</p>
+                        <p class="ms-3">{{ order.id }}</p>
+
+                        <p class="mb-1 fw-bold">Total Amount:</p>
+                        <p class="ms-3 display-6 text-primary">₹{{ order.get_total_with_shipping|floatformat:2 }}</p>
+                    </div>
+
+                    <a href="{% url 'store:home' %}" class="btn btn-primary btn-lg mt-4 me-2">Continue Shopping</a>
+                    <a href="{% url 'store:view_orders' %}" class="btn btn-outline-secondary btn-lg mt-4">View Order Details</a>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

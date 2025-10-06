@@ -1,0 +1,45 @@
+{% load static %}
+
+{% for product in products %}
+<div class="col-lg-4 col-md-6 mb-4">
+    <div class="card shadow-sm h-100 product-card border-0 transition-300">
+        
+        <div class="product-image-container overflow-hidden">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top zoom-on-hover" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+            {% else %}
+            <img src="https://picsum.photos/seed/{{ product.id|add:"100" }}/300/250" 
+                 class="card-img-top" alt="{{ product.name }} placeholder" style="height: 250px; object-fit: cover;">
+            {% endif %}
+        </div>
+
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-truncate mb-1 fw-bold">{{ product.name }}</h5>
+            <small class="text-muted mb-3">{{ product.category.name }}</small>
+            
+            <p class="card-text fw-bolder fs-5 mt-auto text-primary">${{ product.price|floatformat:2 }}</p>
+            
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <button data-product="{{product.id}}" data-action="add" 
+                        class="btn btn-sm btn-success update-cart flex-grow-1 me-2 hover-lift">
+                    <i class="bi bi-cart-plus-fill me-1"></i> Add to Cart
+                </button>
+                <a href="{% url 'store:product_detail' product.id %}" class="btn btn-sm btn-outline-secondary hover-lift">
+                    <i class="bi bi-eye-fill"></i> View
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% empty %}
+<div class="col-12"><p class="text-muted text-center">No products found.</p></div>
+{% endfor %}
+
+<style>
+/* Add a slight transition for hover effects */
+.transition-300 { transition: all 0.3s ease-in-out; }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; }
+.zoom-on-hover { transition: transform 0.5s ease; }
+.product-card:hover .zoom-on-hover { transform: scale(1.05); }
+.hover-lift:hover { transform: translateY(-2px); }
+</style>

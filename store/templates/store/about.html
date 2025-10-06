@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">About Our E-Commerce Store</h1>
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto">
+            <p class="lead text-center text-muted">
+                Welcome to our store, where quality meets convenience. Founded in 2024, our mission is to provide the best products
+                with an unmatched shopping experience. We believe in transparency, customer satisfaction, and building a community.
+            </p>
+        </div>
+    </div>
+
+    <h2 class="text-center mb-5 border-bottom pb-2">Meet Our Team</h2>
+    <div class="row justify-content-center">
+        {% for member in team_members %}
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card shadow-sm text-center h-100">
+                {% if member.image %}
+                    <img src="{{ member.image.url }}" class="card-img-top mx-auto mt-3 rounded-circle" 
+                         alt="{{ member.name }}" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-light mx-auto mt-3 rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 150px; height: 150px;">
+                        <i class="bi bi-person-circle fs-1 text-muted"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ member.name }}</h5>
+                    <p class="card-text text-primary">{{ member.role }}</p>
+                    <small class="text-muted">{{ member.bio|truncatechars:100 }}</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">Our amazing team members will be introduced soon!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container my-5">
+    <h1 class="fw-bold text-center mb-5 testimonial-heading">Final Order Review</h1>
+    
+    <div class="row g-4">
+        
+        {# LEFT COLUMN: Order Summary & Action #}
+        <div class="col-lg-7">
+            
+            {# Payment Method Confirmation #}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between align-items-center">
+                    Payment Method
+                    <span class="badge bg-warning text-dark fs-6">{{ payment_method|upper }}</span>
+                </div>
+                <div class="card-body">
+                    {% if payment_method == 'razorpay' %}
+                        <p class="lead text-primary">You chose **Online Payment**.</p>
+                        <p>You will be redirected to the secure Razorpay gateway in the next step to complete the payment for the total amount due.</p>
+                    {% else %}
+                        <p class="lead text-info">You chose **Cash On Delivery (COD)**.</p>
+                        <p>Please have ₹{{ order.get_total_with_shipping|floatformat:2 }} ready at the time of delivery. Your order will be confirmed immediately.</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {# Shipping Address Confirmation #}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white fw-bold">Shipping Address</div>
+                <div class="card-body">
+                    {% if shipping_address %}
+                        <p class="mb-1 fw-bold">{{ shipping_address.name }}</p>
+                        <p class="mb-1">{{ shipping_address.address }}{% if shipping_address.address2 %}, {{ shipping_address.address2 }}{% endif %}</p>
+                        <p class="mb-1">{{ shipping_address.city }}, {{ shipping_address.state }} - {{ shipping_address.zipcode }}</p>
+                        <p class="mb-0 text-muted">{{ shipping_address.email }}</p>
+                    {% else %}
+                        <p class="text-danger">Error: Shipping address could not be loaded. Please return to checkout.</p>
+                        <a href="{% url 'store:checkout' %}" class="btn btn-sm btn-outline-danger">Return to Checkout</a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {# Action Button: This is the final step #}
+            <div class="d-grid gap-2 mt-4">
+                {% if payment_method == 'razorpay' %}
+                    {# This button should submit a small form or hit a final view to initiate the Razorpay call #}
+                    <a href="{% url 'store:process_razorpay_payment' %}" class="btn btn-success btn-lg fw-bold">
+                        <i class="bi bi-shield-lock-fill me-2"></i> Proceed to Secure Payment
+                    </a>
+                {% else %}
+                    {# This button hits the final COD confirmation view #}
+                    <a href="{% url 'store:finalize_cod_order' %}" class="btn btn-primary btn-lg fw-bold">
+                        <i class="bi bi-box-seam me-2"></i> Confirm Order and Pay on Delivery
+                    </a>
+                {% endif %}
+            </div>
+            <p class="text-center small mt-3">By clicking above, you agree to our Terms and Conditions.</p>
+
+        </div>
+        
+        {# RIGHT COLUMN: Final Order Total Summary #}
+        <div class="col-lg-5">
+            <div class="card shadow-lg bg-light">
+                <div class="card-header bg-dark text-white fw-bold">Order Summary</div>
+                <div class="card-body">
+                    
+                    {# Item List (Optional: Can be hidden to save space, but good for final review) #}
+                    <ul class="list-group list-group-flush mb-3 small">
+                        {% for item in order.orderitem_set.all %}
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            {{ item.product.name }} (x{{ item.quantity }})
+                            <span>₹{{ item.get_total|floatformat:2 }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                   
+<ul class="list-group list-group-flush mb-3">
+    <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+        Subtotal: 
+        {# Keep using get_cart_total (assumed to exist on model) #}
+        <span>₹{{ order.get_cart_total|floatformat:2 }}</span> 
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+        Shipping: (free)
+        {# USE the new context variable shipping_fee #}
+        <span>₹{{ shipping_fee|floatformat:2 }}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center fw-bold fs-5 border-top border-dark mt-2 bg-light">
+        Grand Total: 
+        <span class="fs-4 text-primary">
+            {# USE the new context variable grand_total #}
+            ₹{{ order.get_cart_total|floatformat:2 }}
+        </span>
+    </li>
+</ul>
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock content %}

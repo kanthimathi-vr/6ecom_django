@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+
+/* Breadcrumb Links */
+.breadcrumb-item a {
+    color: var(--bs-secondary); /* Use a complementary purple/gray */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--bs-primary); /* Primary purple on hover */
+}
+
+/* Active Breadcrumb Item */
+.breadcrumb-item.active {
+    color: var(--bs-primary);
+    font-weight: bold;
+}
+
+/* Tab Links (Bootstrap's default active color is often blue, we override it) */
+.nav-tabs .nav-link {
+    color: #495057; /* Default dark text */
+    border: 1px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: #e9ecef #e9ecef var(--bs-primary);
+    isolation: isolate;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--bs-primary); /* Primary purple for active tab text */
+    border-color: #dee2e6 #dee2e6 #fff; /* White bottom border to merge with content area */
+    border-bottom: 2px solid var(--bs-primary) !important; /* Purple underline for active tab */
+    font-weight: bold;
+}
+
+/* Product Detail Action Button Lift */
+.hover-lift {
+    transition: all 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(var(--bs-primary-rgb), 0.3) !important;
+}
+</style>
+<div class="container py-5">
+    
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'store:category_filter' product.category.slug %}">{{ product.category.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name|truncatechars:30 }}</li>
+        </ol>
+    </nav>
+
+    <div class="row gx-5 mb-5 p-4 bg-white rounded-3 border">
+        
+        <div class="col-md-5 mb-4">
+            <div class="main-image-container overflow-hidden rounded-3 shadow-sm border">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                {% else %}
+                <img src="https://picsum.photos/seed/{{ product.id|add:"200" }}/800/800" 
+                     class="img-fluid" alt="{{ product.name }} placeholder">
+                {% endif %}
+            </div>
+            
+            <div class="d-flex mt-3 gap-2">
+                <div class="small-image-placeholder border rounded p-2 text-center bg-light" style="width: 70px; height: 70px;">
+                    <i class="bi bi-image fs-4 text-primary"></i>
+                </div>
+                <div class="small-image-placeholder border rounded p-2 text-center bg-light" style="width: 70px; height: 70px;">
+                    <i class="bi bi-image fs-4 text-primary"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-7">
+            <h1 class="display-5 fw-bolder mb-2 text-dark">{{ product.name }}</h1>
+            <p class="text-muted mb-3">SKU: #{{ product.id }} | Category: {{ product.category.name }}</p>
+
+            <h2 class="text-success fw-bolder mb-3 display-4">${{ product.price|floatformat:2 }}</h2>
+            
+            <div class="mb-4">
+                <span class="badge bg-{% if product.digital %}warning{% else %}primary{% endif %} text-dark fs-6 me-2">
+                    {% if product.digital %}Digital Product{% else %}Physical Item{% endif %}
+                </span>
+                <span class="badge bg-success fs-6"><i class="bi bi-check-circle-fill me-1"></i> In Stock</span>
+            </div>
+
+            <p class="lead text-dark mb-4 border-start border-3 border-primary ps-3">
+                Experience the difference with this premium item. Designed for durability and performance in every detail.
+            </p>
+
+            <div class="d-flex align-items-center mb-5">
+                <label for="quantity" class="me-3 fw-bold">Quantity:</label>
+                <input type="number" id="quantity" value="1" min="1" class="form-control text-center me-4" style="max-width: 80px;">
+                <button data-product="{{product.id}}" data-action="add" 
+                        class="btn btn-primary btn-lg update-cart flex-grow-1 hover-lift">
+                    <i class="bi bi-bag-fill me-2"></i> Add to Cart
+                </button>
+            </div>
+
+            <div class="border-top pt-3">
+                <p class="mb-2 fw-semibold"><i class="bi bi-truck text-success me-2"></i> Free Shipping over $50</p>
+                <p class="mb-0 fw-semibold"><i class="bi bi-arrow-repeat text-primary me-2"></i> 30-Day Money Back Guarantee</p>
+            </div>
+        </div>
+    </div>
+    
+    <h2 class="mt-5 mb-3 border-bottom pb-2">Details and Specifications</h2>
+    <ul class="nav nav-tabs mb-4" id="detailTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Full Description</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab">Specifications</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="detailTabsContent">
+        <div class="tab-pane fade show active p-3 bg-light rounded" id="description" role="tabpanel">
+            <p>This product excels in its category by combining lightweight design with extreme durability. The precise engineering ensures maximum user satisfaction. Every unit undergoes rigorous quality testing before shipment. Buy with confidence!</p>
+            <p class="fst-italic text-muted">A note about care: Wipe clean with a damp cloth only.</p>
+        </div>
+        <div class="tab-pane fade p-3 bg-light rounded" id="specs" role="tabpanel">
+            <table class="table table-sm table-borderless">
+                <tbody>
+                    <tr><th>Material</th><td>High-Grade Polymer/Metal Alloy</td></tr>
+                    <tr><th>Dimensions</th><td>12" x 8" x 3"</td></tr>
+                    <tr><th>Weight</th><td>1.5 lbs</td></tr>
+                    <tr><th>Warranty</th><td>1 Year Manufacturer</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 class="mt-5 mb-4 text-center border-bottom pb-2">You Might Also Like</h2>
+    <div class="row">
+        {% with products=suggested_products %}
+            {% include 'store/partials/product_cards.html' %}
+        {% endwith %}
+    </div>
+
+</div>
+
+{% endblock %}

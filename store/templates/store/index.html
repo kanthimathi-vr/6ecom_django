@@ -1,0 +1,442 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+    /* Set the background color explicitly to white */
+    background-color: #f2ebf6; 
+}
+
+#heroCarousel {
+    height: 80vh; 
+}
+
+#heroCarousel .carousel-inner,
+#heroCarousel .carousel-item {
+    height: 100%;
+}
+
+#heroCarousel .carousel-item img {
+    height: 100%;       /* This now forces the image to 60vh */
+    object-fit: cover;
+    width: 100%;
+}
+/* y choose us */
+
+/* NEW: Feature Card Styling */
+.feature-card {
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    cursor: default;
+}
+
+/* Hover effect: Subtle lift and enhanced lavender shadow */
+.feature-card.hover-lift:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 1rem 3rem rgba(var(--bs-primary-rgb), 0.175) !important;
+}
+
+/* Ensure the card body text is centered */
+.feature-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/* suggested products */
+:root {
+    /* NEW PRIMARY COLOR: Deeper Purple (#8A2BE2 - BlueViolet) */
+    --bs-primary: #35085e; }
+.suggested-product-card {
+    transition: all 0.3s ease;
+    border: 1px solid var(--bs-primary); /* A subtle primary border */
+}
+
+.suggested-product-card:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: 0 0.5rem 1rem rgba(var(--bs-primary-rgb), 0.3) !important; /* Stronger lavender shadow */
+}
+
+.suggested-product-card .img-container {
+    height: 150px; /* Fixed height for consistent image size */
+    overflow: hidden;
+    display: flex; /* For centering the image vertically/horizontally */
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; /* Light background for placeholders */
+    border-bottom: 1px solid rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.suggested-product-card .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the container, cropping if necessary */
+}
+
+.suggested-product-card .card-body {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.suggested-product-card .card-title {
+    color: #333; /* Darker text for readability */
+}
+
+/* Star rating color */
+.suggested-product-card .star-rating .bi-star-fill {
+    color: var(--custom-purple); /* Using your custom purple for stars */
+}
+/* testimonial */
+
+/* Heading Color (Keep the same) */
+.testimonial-heading {
+    color: var(--bs-primary) !important;
+}
+
+/* Card Styling and Hover Effect (Keep the same) */
+.testimonial-card {
+    border: none !important;
+    transition: all 0.3s ease;
+    cursor: default;
+    /* Ensure card content is set up for relative positioning of the image */
+    position: relative;
+    padding-top: 40px !important; /* IMPORTANT: Add padding at the top to make room for the large image */
+    text-align: center; /* Center the quote and text */
+}
+
+.testimonial-card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(var(--bs-primary-rgb), 0.2) !important;
+    transform: translateY(-5px);
+}
+
+/* NEW: Image Container for Centering and Size */
+.testimonial-profile-top {
+    /* Position image absolutely relative to the card */
+    position: absolute;
+    top: -40px; /* Pull it up 40px into the padding space */
+    left: 50%; /* Start at the center */
+    transform: translateX(-50%); /* Move back by half its width to truly center */
+    width: 80px; /* The size of the circular image */
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 10;
+    border: 4px solid var(--bs-primary); /* Slightly thicker border */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    background-color: white; /* Ensure the background behind the image is white */
+}
+
+/* Ensure the image fills the circular container */
+.testimonial-profile-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Customer Name and Rating Placement */
+.testimonial-info {
+    margin-top: 0.5rem; /* Space after the quote/text */
+}
+
+/* Star Rating Color */
+.testimonial-card .star-rating i {
+    color: var(--bs-primary) !important;
+    font-size: 1.1em;
+}
+
+</style>
+{# 1. Place all non-product-related content FIRST #}
+
+{# --- HERO CAROUSEL --- #}
+<div id="heroCarousel" class="carousel slide mb-5 mt-4 shadow-lg rounded-3 overflow-hidden" data-bs-ride="carousel" style="border-radius: 32px !important;">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            {# FIXED: Removed the inline style attribute to allow CSS 'height: 100%' to take effect #}
+            <img src="https://picsum.photos/seed/promo-1/1200/300" class="d-block w-100" alt="New Arrivals">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded-3" style="border-radius: 32px !important;">
+                <h3 class="fw-bold" style="color: rgb(65, 7, 88) !important;">New Arrivals! ✨</h3>
+                <p style="color: rgb(65, 7, 88) !important;">Discover the latest must-have items this season.</p>
+                <a href="#" class="btn btn-sm btn-light">Shop Now</a>
+            </div>
+        </div>
+        <div class="carousel-item">
+            {# FIXED: Removed the inline style attribute to allow CSS 'height: 100%' to take effect #}
+            <img src="https://picsum.photos/seed/promo-2/1200/300" class="d-block w-100" alt="Seasonal Sale">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 p-2 rounded-3" style="border-radius: 32px !important;">
+                <h3 class="fw-bold" style="color: rgb(65, 7, 88) !important;">50% Off Flash Sale! 🏷️</h3>
+                <p style="color: rgb(65, 7, 88) !important;">Limited time offers on top categories.</p>
+                <a href="#" class="btn btn-sm btn-warning">View Deals</a>
+            </div>
+        </div>
+        <div class="carousel-item">
+            {# FIXED: Removed the inline style attribute to allow CSS 'height: 100%' to take effect #}
+            <img src="https://picsum.photos/seed/promo-3/1200/300" class="d-block w-100" alt="Free Shipping">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 p-2 rounded-3" style="border-radius: 32px !important;">
+                <h3 class="fw-bold" style="color: rgb(65, 7, 88) !important;">Free Shipping on All Orders! 🚚</h3>
+                <p style="color: rgb(65, 7, 88) !important;">No minimum purchase required. Shop with ease!</p>
+                <a href="#" class="btn btn-sm btn-outline-light">Get Started</a>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<hr class="my-5">
+
+{# --- ENHANCED SALIENT FEATURES (Key Selling Points) --- #}
+<h2 class="text-center mb-4 display-6 fw-bold " style="color: rgb(65, 7, 88);">Why Choose Us?</h2>
+<div class="row text-center mb-5">
+    
+    {# Feature Card 1: Fast Delivery - NEW ICON: Lightning (for speed) #}
+    <div class="col-md-4 mb-4">
+        <div class="feature-card card h-100 shadow-sm border-0 p-3 hover-lift">
+            <div class="card-body">
+                {# Replaced bi-truck with bi-lightning-fill #}
+                <i class="bi bi-lightning-fill display-3 text-primary mb-3" style="color: rgb(65, 7, 88) !important;"></i>
+                <h5 class="fw-bold mb-2">Fast Delivery</h5>
+                <p class="text-muted small mb-0">Items ship within 24 hours.</p>
+            </div>
+        </div>
+    </div>
+    
+    {# Feature Card 2: Secure Checkout - NEW ICON: Credit Card (for transaction) #}
+    <div class="col-md-4 mb-4">
+        <div class="feature-card card h-100 shadow-sm border-0 p-3 hover-lift">
+            <div class="card-body">
+                {# Replaced bi-shield-lock with bi-credit-card-2-back-fill #}
+                <i class="bi bi-credit-card-2-back-fill display-3 text-secondary mb-3" style="color: rgb(65, 7, 88) !important;"></i>
+                <h5 class="fw-bold mb-2">Secure Checkout</h5>
+                <p class="text-muted small mb-0">Encrypted payments & privacy.</p>
+            </div>
+        </div>
+    </div>
+    
+    {# Feature Card 3: Easy Returns - NEW ICON: Arrow Repeat (for cyclic return) #}
+    <div class="col-md-4 mb-4">
+        <div class="feature-card card h-100 shadow-sm border-0 p-3 hover-lift">
+            <div class="card-body">
+                {# Replaced bi-arrow-return-left with bi-arrow-repeat #}
+                <i class="bi bi-arrow-repeat display-3 text-dark mb-3" style="color: rgb(65, 7, 88) !important;"></i>
+                <h5 class="fw-bold mb-2">Easy Returns</h5>
+                <p class="text-muted small mb-0">Hassle-free 30-day policy.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5">
+{# --- ENHANCED SUGGESTED PRODUCTS --- #}
+<h2 class="mb-4 text-center fw-bold" style="color: var(--custom-purple) !important;">
+    <i class="bi bi-gem me-2" style="color: var(--bs-primary);"></i> Handpicked for You
+</h2>
+<div class="row mb-5">
+    {% for product in products|slice:":3" %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="suggested-product-card card h-100 shadow-sm">
+            <div class="img-container">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                {% else %}
+                {# Placeholder image, ensuring it fits the theme #}
+                <img src="https://picsum.photos/seed/suggested-{{ product.id }}/300/200" 
+                     alt="{{ product.name }} placeholder" loading="lazy">
+                {% endif %}
+            </div>
+            <div class="card-body text-center d-flex flex-column">
+                <h5 class="card-title text-truncate mb-1">{{ product.name }}</h5>
+                <p class="card-text text-muted small mb-2">{{ product.category.name }}</p>
+                
+                {# Star Ratings - Updated to use custom purple #}
+                <div class="star-rating mb-2">
+                    <i class="bi bi-star-fill fs-6" style="color: var(--custom-purple);"></i>
+                    <i class="bi bi-star-fill fs-6" style="color: var(--custom-purple);"></i>
+                    <i class="bi bi-star-fill fs-6" style="color: var(--custom-purple);"></i>
+                    <i class="bi bi-star-fill fs-6" style="color: var(--custom-purple);"></i>
+                    <i class="bi bi-star-half fs-6" style="color: var(--custom-purple);"></i>
+                </div>
+
+                <p class="card-text fw-bold fs-5 mt-auto text-dark">${{ product.price|floatformat:2 }}</p>
+                
+                <div class="d-grid mt-2">
+                    <a href="{% url 'store:product_detail' product.id %}" class="btn btn-primary btn-sm" style="background-color: #35085e; color: white;">
+                        <i class="bi bi-eye"></i> View Product
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center" role="alert">
+            <i class="bi bi-info-circle me-2"></i> No suggested products to show yet.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<hr class="my-5">
+
+{# 2. Start the row that contains the Categories Sidebar and the Product Grid #}
+<div class="row">
+    
+    {# MODIFIED LOCATION: Left Sidebar - Categories (Now starts here) #}
+    <div class="col-md-3">
+        <div class="list-group mb-4 shadow-sm bg-white border rounded-3">
+            <a href="{% url 'store:home' %}" 
+                class="list-group-item list-group-item-action {% if not selected_category_slug %}active{% endif %}" style="background-color: #35085e;color: white;font-size: 24px;">
+                All Products ({{ products|length }})
+            </a>
+            
+            {% for category in categories %}
+            <a href="{% url 'store:home' %}?category={{ category.slug }}" 
+                class="list-group-item list-group-item-action {% if selected_category_slug == category.slug %}active{% endif %}" style="font-size: 22px;">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# Main Content Area - ONLY Product Grid #}
+    <div class="col-md-9">
+
+        {# --- PRODUCT GRID (Existing Product Listing) --- #}
+        <h2 class="mb-4" style="color: #35085e;font-weight: bold;">
+            {% if selected_category_slug %}
+                {{ selected_category_slug|title }} Products
+            {% else %}
+                All Products
+            {% endif %}
+        </h2>
+        <div class="row">
+            {% if products %}
+                {% for product in products %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm h-100 border-0">
+                        <div class="img-container" style="height: 200px; overflow: hidden;">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top w-100" alt="{{ product.name }}" style="height: 100%; object-fit: cover;">
+                            {% else %}
+                            <img src="https://picsum.photos/seed/{{ product.id }}/300/200" 
+                                class="card-img-top w-100" alt="{{ product.name }} placeholder" 
+                                style="height: 100%; object-fit: cover;">
+                            {% endif %}
+                        </div>
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-truncate">{{ product.name }}</h5>
+                            <p class="card-text text-muted mb-1 small">{{ product.category.name }}</p>
+                            <p class="card-text fw-bold fs-5 mt-auto">${{ product.price|floatformat:2 }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <button data-product="{{product.id}}" data-action="add" 
+                                         class="btn btn-sm btn-success update-cart flex-grow-1 me-2" style="color: white;background-color: #35085e;">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                </button>
+                                <a href="{% url 'store:product_detail' product.id %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="bi bi-info-circle me-2"></i> No products found in this category.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+
+
+<hr class="mt-5">
+{# --- ENHANCED TESTIMONIALS SECTION (Full Width) --- #}
+<div class="container py-5 bg-light rounded-3 mt-4">
+    <h2 class="text-center mb-5 display-5 fw-light testimonial-heading">What Our Customers Say 💬</h2>
+    <div class="row">
+        
+        {# Testimonial 1: Jessica R. #}
+        <div class="col-md-4 mb-4">
+            <div class="testimonial-card card h-100 shadow-sm p-3">
+                <div class="card-body">
+                    <p class="card-text fst-italic">"The quality and pricing here are unmatched! I love that I can filter easily to find exactly what I need. Great store!"</p>
+                </div>
+                
+                <div class="card-footer bg-white border-0 pt-0">
+                    <div class="testimonial-profile">
+                        {# NOTE: Replace the src with your actual image paths (e.g., {% static 'img/jessica.jpg' %}) #}
+                        <img src="https://picsum.photos/seed/face-1/100/100" class="testimonial-img" alt="Jessica R.">
+                        <div>
+                            <p class="fw-bold mb-0 text-dark">Jessica R.</p>
+                            <div class="star-rating">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {# Testimonial 2: Tom V. #}
+        <div class="col-md-4 mb-4">
+            <div class="testimonial-card card h-100 shadow-sm p-3">
+                <div class="card-body">
+                    <p class="card-text fst-italic">"My package arrived quickly and in perfect condition. The recommended products section was a pleasant surprise and very helpful."</p>
+                </div>
+                
+                <div class="card-footer bg-white border-0 pt-0">
+                    <div class="testimonial-profile">
+                        <img src="https://picsum.photos/seed/face-2/100/100" class="testimonial-img" alt="Tom V.">
+                        <div>
+                            <p class="fw-bold mb-0 text-dark">Tom V.</p>
+                            <div class="star-rating">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {# Testimonial 3: Michelle K. #}
+        <div class="col-md-4 mb-4">
+            <div class="testimonial-card card h-100 shadow-sm p-3">
+                <div class="card-body">
+                    <p class="card-text fst-italic">"A great selection and a beautiful site design! The shopping experience was seamless from start to finish."</p>
+                </div>
+                
+                <div class="card-footer bg-white border-0 pt-0">
+                    <div class="testimonial-profile">
+                        <img src="https://picsum.photos/seed/face-3/100/100" class="testimonial-img" alt="Michelle K.">
+                        <div>
+                            <p class="fw-bold mb-0 text-dark">Michelle K.</p>
+                            <div class="star-rating">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock content %}
