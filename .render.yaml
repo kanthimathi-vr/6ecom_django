@@ -13,7 +13,7 @@ services:
   name: my-django-app
   env: python
   buildCommand: "pip install -r requirements.txt"
-  startCommand: "gunicorn 6ecom_django.wsgi:application"
+  startCommand: "gunicorn myproject_ecom.wsgi:application"
   # Replace 'your_project_name' with your actual Django project name
   
   # Environment variables for the web service
